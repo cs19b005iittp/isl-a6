@@ -128,7 +128,7 @@ from torchmetrics import Precision, Recall, F1Score, Accuracy
 from torchmetrics.classification import accuracy
 
 def test_network(dataloader, DynCNN_model, loss_fun):
-    printf('Test Results of the Model ...')
+    print('Test Results of the Model ...')
     size = len(dataloader.dataset)
     num_batches = len(dataloader)
     DynCNN_model.eval()
