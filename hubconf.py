@@ -99,7 +99,7 @@ def get_DynCNN_model(config, input_dim, num_classes):
     DynCNN_model = Dyn_CNN(config, input_dim, num_classes)
     return DynCNN_model
 
-def train_network(train_dataloader, model, optim, loss_fn, epochs=5):
+def train_network(train_dataloader, DynCNN_model, optim, loss_fn, epochs=5):
     print('Training Model ...\n\n')
     for epoch in range(epochs):
         running_loss = 0.0
@@ -107,7 +107,7 @@ def train_network(train_dataloader, model, optim, loss_fn, epochs=5):
             inputs, labels = data
             inputs , labels = inputs.to(device), labels.to(device)
             optim.zero_grad()
-            outputs = model(inputs)
+            outputs = DynCNN_model(inputs)
             tmp = torch.nn.functional.one_hot(labels, num_classes= 10)
             loss = loss_fn(outputs, tmp)
             loss.backward()
@@ -124,17 +124,18 @@ from sklearn.metrics import precision_recall_fscore_support
 from torchmetrics import Precision, Recall, F1Score, Accuracy
 from torchmetrics.classification import accuracy
 
-def test_network(dataloader, model, loss_fun):
+def test_network(dataloader, DynCNN_model, loss_fun):
+    printf('Test Results of the Model ...')
     size = len(dataloader.dataset)
     num_batches = len(dataloader)
-    model.eval()
+    DynCNN_model.eval()
     test_loss, correct = 0, 0
     with torch.no_grad():
         for X, y in dataloader:
             X = X.to(device)
             y = y.to(device)
             tmp = torch.nn.functional.one_hot(y, num_classes= 10)
-            pred = model(X)
+            pred = DynCNN_model(X)
             test_loss += loss_fun(pred, tmp).item()
             correct += (pred.argmax(1) == y).type(torch.float).sum().item()
     test_loss/= num_batches
