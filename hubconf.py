@@ -76,8 +76,8 @@ def loss_fun(y_pred, y_actual):
   v = torch.sum(v)
   return v
 
-def get_optim(model, lr=1e-6):
-    optim = torch.optim.SGD(model.parameters(), lr = lr)
+def get_optim(DynCNN_model, lr=1e-6):
+    optim = torch.optim.SGD(DynCNN_model.parameters(), lr = lr)
     return optim
 
 def get_num_classes(train_data):
@@ -95,9 +95,9 @@ def get_input_dim(test_dataloader):
     
     return _x[2],_x[3] #heightxwidth
 
-def get_model(config, input_dim, num_classes):
-    model = Dyn_CNN(config, input_dim, num_classes)
-    return model
+def get_DynCNN_model(config, input_dim, num_classes):
+    DynCNN_model = Dyn_CNN(config, input_dim, num_classes)
+    return DynCNN_model
 
 def train_network(train_dataloader, model, optim, loss_fn, epochs=5):
     print('Training Model ...\n\n')
